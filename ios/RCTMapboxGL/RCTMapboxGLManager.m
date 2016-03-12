@@ -43,7 +43,8 @@ RCT_EXPORT_MODULE();
              @"onLongPress",
              @"onFinishLoadingMap",
              @"onStartLoadingMap",
-             @"onLocateUserFailed"
+             @"onLocateUserFailed",
+             @"onProgressDidChange"
              ];
 }
 
@@ -163,6 +164,19 @@ RCT_CUSTOM_VIEW_PROPERTY(compassIsHidden, BOOL, RCTMapboxGL)
 {
     BOOL value = [json boolValue];
     [view setCompassVisibility:value ? true : false];
+}
+
+RCT_EXPORT_METHOD(createOfflineRegion:(nonnull NSNumber *)reactTag
+                  options:(NSDictionary*)options)
+{
+    [_bridge.uiManager addUIBlock:^(RCTUIManager *uiManager, NSDictionary<NSNumber *, RCTMapboxGL *> *viewRegistry) {
+        RCTMapboxGL *mapView = viewRegistry[reactTag];
+        if ([mapView isKindOfClass:[RCTMapboxGL class]]) {
+            NSArray *b = [options valueForKey:@"bounds"];
+            MGLCoordinateBounds bounds = MGLCoordinateBoundsMake(CLLocationCoordinate2DMake([b[0] floatValue], [b[1] floatValue]), CLLocationCoordinate2DMake([b[2] floatValue], [b[3] floatValue]));
+            [mapView doOffline:bounds fromZoomLevel:[[options valueForKey:@"fromZoomLevel"] floatValue] toZoomLevel:[[options valueForKey:@"toZoomLevel"] floatValue] name:[options valueForKey:@"name"]];
+        }
+    }];
 }
 
 RCT_EXPORT_METHOD(setZoomLevelAnimated:(nonnull NSNumber *)reactTag

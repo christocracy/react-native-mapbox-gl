@@ -13,7 +13,7 @@ if [ -d ./Mapbox.framework ]; then
     rm -rf ./Mapbox.framework
 fi
 
-curl -sS https://mapbox.s3.amazonaws.com/mapbox-gl-native/ios/builds/mapbox-ios-sdk-$VERSION-dynamic.zip > temp.zip
+curl -sS https://mapbox.s3.amazonaws.com/mapbox-gl-native/ios/builds/mapbox-ios-sdk-$VERSION.zip > temp.zip
 unzip -o temp.zip -d temp
 mv temp/dynamic/Mapbox.framework ./Mapbox.framework
 rm -r temp

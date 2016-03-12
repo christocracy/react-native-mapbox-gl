@@ -11,7 +11,7 @@
 #import "RCTEventDispatcher.h"
 #import "RCTBridgeModule.h"
 
-@interface RCTMapboxGL : RCTView <MGLMapViewDelegate, RCTBridgeModule>
+@interface RCTMapboxGL : RCTView <MGLMapViewDelegate, MGLOfflinePackDelegate, RCTBridgeModule>
 
 - (instancetype)initWithEventDispatcher:(RCTEventDispatcher *)eventDispatcher;
 
@@ -43,6 +43,7 @@
 - (void)setCompassVisibility:(BOOL)isVisible;
 - (double)zoomLevel;
 - (double)direction;
+- (void) createOfflineRegion:(MGLCoordinateBounds)bounds fromZoomLevel:(double)fromZoomLevel toZoomLevel:(double)toZoomLevel name:(NSString*)name;
 - (CLLocationCoordinate2D)centerCoordinate;
 @property (nonatomic) MGLAnnotationVerticalAlignment userLocationVerticalAlignment;
 @property (nonatomic) UIEdgeInsets contentInset;

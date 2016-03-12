@@ -4,6 +4,9 @@ var React = require('react-native');
 var { NativeModules, requireNativeComponent } = React;
 
 var MapMixins = {
+  addPackForRegion(mapRef, options) {
+    NativeModules.MapboxGLManager.addPackForRegion(React.findNodeHandle(this.refs[mapRef]), options);
+  },
   setDirectionAnimated(mapRef, heading) {
     NativeModules.MapboxGLManager.setDirectionAnimated(React.findNodeHandle(this.refs[mapRef]), heading);
   },
@@ -82,6 +85,9 @@ var MapView = React.createClass({
   _onLocateUserFailed(event: Event) {
     if (this.props.onLocateUserFailed) this.props.onLocateUserFailed(event.nativeEvent.src);
   },
+  _onProgressDidChange(event: Event) {
+    if (this.props.onProgressDidChange) this.props.onProgressDidChange(event.nativeEvent.src);
+  },
   propTypes: {
     showsUserLocation: React.PropTypes.bool,
     rotateEnabled: React.PropTypes.bool,
@@ -134,7 +140,8 @@ var MapView = React.createClass({
     onLocateUserFailed: React.PropTypes.func,
     onLongPress: React.PropTypes.func,
     contentInset: React.PropTypes.array,
-    userLocationVerticalAlignment: React.PropTypes.number
+    userLocationVerticalAlignment: React.PropTypes.number,
+    onProgressDidChange: React.PropTypes.func
   },
   getDefaultProps() {
     return {
@@ -167,7 +174,8 @@ var MapView = React.createClass({
         onLongPress={this._onLongPress}
         onFinishLoadingMap={this._onFinishLoadingMap}
         onStartLoadingMap={this._onStartLoadingMap}
-        onLocateUserFailed={this._onLocateUserFailed} />
+        onLocateUserFailed={this._onLocateUserFailed}
+        onProgressDidChange={this._onProgressDidChange} />
     );
   }
 });
